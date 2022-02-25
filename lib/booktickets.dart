@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 // import 'package:train/variable.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:reservationapp/booking.dart';
+import 'package:reservationapp/by.dart';
 import 'package:reservationapp/pnr.dart';
 import 'databasehelper.dart';
 
@@ -249,8 +250,8 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
                                   List<Map<String, dynamic>> qrow =
                                       await Databasehelper.instance.sel();
                                   int f = 0;
-                                  for (var i in qrow) {
-                                    if (i["name"] == from && i["name2"] == to) {
+                                  for (var i in db1) {
+                                     if (i["from"].toString().toLowerCase() == from.toLowerCase() && i["to"].toString().toLowerCase() == to.toLowerCase() && i["date"].toString().contains(date)) {
                                       status = "Available";
                                       satus_col = Colors.green;
                                       print(i);
@@ -286,8 +287,8 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
                                   List<Map<String, dynamic>> qrow =
                                       await Databasehelper.instance.sel();
                                   int f = 0;
-                                  for (var i in qrow) {
-                                    if (i["name"] == from && i["name2"] == to) {
+                                  for (var i in db1) {
+                                    if (i["from"].toString().toLowerCase() == from.toLowerCase() && i["to"].toString().toLowerCase() == to.toLowerCase() && i["date"].toString().contains(date)) {
                                       status = "Available";
                                       satus_col = Colors.green;
                                       print(i);
@@ -300,7 +301,8 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
                                     satus_col = Colors.red;
                                   }
                                   if (status == "Available")
-                                    showDialog(
+                                    {
+                                      showDialog(
                                       context: context,
                                       builder: (ctx) => AlertDialog(
                                         elevation: 3,
@@ -323,6 +325,16 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
                                         // ],
                                       ),
                                     );
+                                    for (var i in db1) {
+                                     if (i["from"].toString().toLowerCase() == from.toLowerCase() && i["to"].toString().toLowerCase() == to.toLowerCase() && i["date"].toString().contains(date)) {
+                                      String pnr="PNR"+givingno.toString();
+                                      givingno++;
+                                      db2.add( {'pnr':pnr,'tno':i["tno"],'from': i["from"], 'to': i["to"], 'date': i["date"]});
+                                      break;
+                                    }
+                                  }
+                                  print(db2);
+                                    }
                                   else if (status == "Not Available")
                                     showDialog(
                                       context: context,
@@ -355,27 +367,27 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
                                 )),
                           ],
                         ),
-                        FlatButton(
-                            onPressed: () async {
-                              int y = await Databasehelper.instance.insert(
-                                  {'_id': pid, 'name': from, 'name2': to});
-                              pid++;
-                              print(y);
-                            },
-                            child: Text("insert")),
-                        FlatButton(
-                            onPressed: () async {
-                              List<Map<String, dynamic>> qrow =
-                                  await Databasehelper.instance.sel();
-                              print(qrow);
-                            },
-                            child: Text("print")),
-                        FlatButton(
-                            onPressed: () async {
-                              int rowaff = await Databasehelper.instance.del(2);
-                              print(rowaff);
-                            },
-                            child: Text("delete")),
+                        // FlatButton(
+                        //     onPressed: () async {
+                        //       int y = await Databasehelper.instance.insert(
+                        //           {'_id': pid, 'name': from, 'name2': to});
+                        //       pid++;
+                        //       print(y);
+                        //     },
+                        //     child: Text("insert")),
+                        // FlatButton(
+                        //     onPressed: () async {
+                        //       List<Map<String, dynamic>> qrow =
+                        //           await Databasehelper.instance.sel();
+                        //       print(qrow);
+                        //     },
+                        //     child: Text("print")),
+                        // FlatButton(
+                        //     onPressed: () async {
+                        //       int rowaff = await Databasehelper.instance.del(2);
+                        //       print(rowaff);
+                        //     },
+                        //     child: Text("delete")),
                       ],
                     ),
                   ),

@@ -34,10 +34,22 @@ return await openDatabase(path,version: _dbVersion,onCreate: _oc);
 FutureOr _oc(Database db,int version){
 db.execute(
   '''
-  CREATE TABLE $tabname(
-    _id INT PRIMARY KEY,
-    name TEXT NOT NULL,
-    name2 TEXT
+  CREATE TABLE Train(
+    tno INT PRIMARY KEY,
+    from TEXT NOT NULL,
+    to TEXT NOT NULL,
+    date TEXT NOT NULL,
+  )
+  '''
+);
+db.execute(
+  '''
+  CREATE TABLE Ticket(
+    pnr INT PRIMARY KEY,
+    tno int not null,
+    from TEXT NOT NULL,
+    to TEXT NOT NULL,
+    date TEXT NOT NULL,
   )
   '''
 );
