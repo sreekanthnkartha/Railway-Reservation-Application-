@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:reservationapp/booking.dart';
 import 'package:reservationapp/by.dart';
 import 'package:reservationapp/pnr.dart';
+import 'package:reservationapp/styles.dart';
 import 'databasehelper.dart';
 
 class BOOK_TICKETS extends StatefulWidget {
@@ -139,20 +140,12 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
                                   ),
                                   TextField(
                                     controller: _controller1,
+                                    style: inputstyle(),
                                     onChanged: (value) {
                                       from = value;
                                     },
-                                    decoration: InputDecoration(
-                                        icon: Icon(Icons.gps_fixed_outlined),
-                                        border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                        ),
-                                        labelText: "Starting Point",
-                                        hintText: "From"),
+                                    decoration: inputdec("From", Icons.gps_fixed_outlined),
                                     keyboardType: TextInputType.streetAddress,
-                                    style: const TextStyle(
-                                        fontSize: 20, color: Colors.black),
                                   ),
                                 ],
                               ),
@@ -190,20 +183,13 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
                                   ),
                                   TextField(
                                     controller: _controller2,
+                                    style: inputstyle(),
                                     onChanged: (value) {
                                       to = value;
                                     },
-                                    decoration: InputDecoration(
-                                        icon: Icon(Icons.location_on_outlined),
-                                        border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                        ),
-                                        labelText: "Destination",
-                                        hintText: 'To'),
+                                    decoration: inputdec("To", Icons.location_on_outlined),
                                     keyboardType: TextInputType.streetAddress,
-                                    style: const TextStyle(
-                                        fontSize: 20, color: Colors.black),
+                                    
                                   ),
                                 ],
                               ),
@@ -222,19 +208,13 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
                                 height: 10,
                               ),
                               TextField(
+                                style: inputstyle(),
                                 onChanged: (value) {
                                   date = value;
                                 },
-                                decoration: InputDecoration(
-                                    icon: Icon(Icons.calendar_today_outlined),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    labelText: "Date",
-                                    hintText: "DD/MM/YYYY"),
+                                decoration: inputdec("DD/MM/YYYY", Icons.calendar_today_outlined),
                                 keyboardType: TextInputType.datetime,
-                                style: const TextStyle(
-                                    fontSize: 20, color: Colors.black),
+                                
                               ),
                             ],
                           ),
@@ -319,9 +299,8 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
                                               to.toLowerCase() &&
                                           i["date"].toString().contains(date)) {
                                         String pnr =
-                                            rannum[changer].toString() + givingno.toString();
+                                            rannum[changer].toString();
                                             changer=(changer+1)%5;
-                                        givingno++;
                                         db2.add({
                                           'pnr': pnr,
                                           'tno': i["tno"],

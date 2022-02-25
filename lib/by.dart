@@ -1,6 +1,6 @@
 import 'dart:io';
-int givingno=0,changer=0;
-List<int> rannum=[11111,12345,99999,12535,83502];
+int changer=0;
+List<int> rannum=[111111,123456,999999,125355,835022,789454,321465,984566,144854,129854,789123,456127,142536];
 List<Map<String, dynamic>> db1 = [
   {'tno':'t100','from': 'Aluva', 'to': 'Goa', 'date': '12/11/2012'},
   {'tno':'t200','from': 'Mumbai', 'to': 'Goa', 'date': '12/11/2012'}

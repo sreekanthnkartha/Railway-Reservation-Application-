@@ -20,7 +20,7 @@ inputdec(var title,var icn)=>new InputDecoration(
       height: 2.2, //                                <----- this was the key
     ),
     prefixIcon: Icon(icn, size: 20,color: Colors.black,),
-    contentPadding: EdgeInsets.all(0),
+    contentPadding: EdgeInsets.all(8),
     isDense: true,
     hintText: "$title");
 
