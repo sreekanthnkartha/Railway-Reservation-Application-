@@ -17,9 +17,10 @@ class BOOK_TICKETS extends StatefulWidget {
 
 class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
   @override
+  int f = 0;
   String from = "", to = "", date = "";
   int pid = 8;
-  String status = "";
+  String status = "Not Available";
   Color satus_col = Colors.white;
 
   TextEditingController _controller1 = TextEditingController(text: "");
@@ -226,13 +227,13 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             FlatButton(
-                                color: Colors.blueAccent,
+                                color: Colors.cyan,
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10)),
                                 onPressed: () async {
                                   List<Map<String, dynamic>> qrow =
                                       await Databasehelper.instance.sel();
-                                  int f = 0;
+                                  f = 0;
                                   for (var i in db1) {
                                     if (i["from"].toString().toLowerCase() ==
                                             from.toLowerCase() &&
@@ -267,13 +268,13 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
                                   style: TextStyle(color: Colors.white),
                                 )),
                             FlatButton(
-                                color: Colors.blueAccent,
+                                color: Colors.cyan,
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10)),
                                 onPressed: () async {
                                   List<Map<String, dynamic>> qrow =
                                       await Databasehelper.instance.sel();
-                                  int f = 0;
+                                  f = 0;
                                   for (var i in db1) {
                                     if (i["from"].toString().toLowerCase() ==
                                             from.toLowerCase() &&
@@ -300,7 +301,7 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
                                           i["date"].toString().contains(date)) {
                                         String pnr =
                                             rannum[changer].toString();
-                                            changer=(changer+1)%5;
+                                            changer=(changer+1)%13;
                                         db2.add({
                                           'pnr': pnr,
                                           'tno': i["tno"],
