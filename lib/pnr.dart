@@ -82,6 +82,20 @@ class _PNRState extends State<PNR> {
       showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
+          actions: [
+            TextButton(              
+              child: Text("Cancel",style: TextStyle(color: Colors.red,fontSize: 23),),
+              onPressed: () {
+                Navigator.of(context).pop();
+                for (var i in db2) {
+                      if (i["pnr"] == mypnr) {
+                        db2.remove(i);
+                        break;
+                      }
+                    }
+              },
+            ),
+          ],
           elevation: 3,
           title: Text(
             "Congrats you have successfully booked a ticket",
@@ -91,8 +105,8 @@ class _PNRState extends State<PNR> {
           content: Container(
             height: 250,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              // mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   "PNR NO: $pnr",
@@ -116,10 +130,12 @@ class _PNRState extends State<PNR> {
                   style: TextStyle(color: Colors.black, fontSize: 20),
                 ),
                 SizedBox(height: 20),
-                Icon(
-                  Icons.check_circle_outline,
-                  size: 80,
-                  color: Colors.green,
+                Center(
+                  child: Icon(
+                    Icons.check_circle_outline,
+                    size: 80,
+                    color: Colors.green,
+                  ),
                 ),
               ],
             ),

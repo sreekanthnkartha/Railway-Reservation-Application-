@@ -72,8 +72,9 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10)),
                                   onPressed: () {
-
-                                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => PNR()));
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) => PNR()));
                                   },
                                   child: Row(
                                     mainAxisAlignment:
@@ -98,7 +99,9 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10)),
                                   onPressed: () {
-                                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => Booking()));
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) => Booking()));
                                   },
                                   child: Row(
                                     mainAxisAlignment:
@@ -251,7 +254,11 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
                                       await Databasehelper.instance.sel();
                                   int f = 0;
                                   for (var i in db1) {
-                                     if (i["from"].toString().toLowerCase() == from.toLowerCase() && i["to"].toString().toLowerCase() == to.toLowerCase() && i["date"].toString().contains(date)) {
+                                    if (i["from"].toString().toLowerCase() ==
+                                            from.toLowerCase() &&
+                                        i["to"].toString().toLowerCase() ==
+                                            to.toLowerCase() &&
+                                        i["date"].toString().contains(date)) {
                                       status = "Available";
                                       satus_col = Colors.green;
                                       print(i);
@@ -288,7 +295,11 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
                                       await Databasehelper.instance.sel();
                                   int f = 0;
                                   for (var i in db1) {
-                                    if (i["from"].toString().toLowerCase() == from.toLowerCase() && i["to"].toString().toLowerCase() == to.toLowerCase() && i["date"].toString().contains(date)) {
+                                    if (i["from"].toString().toLowerCase() ==
+                                            from.toLowerCase() &&
+                                        i["to"].toString().toLowerCase() ==
+                                            to.toLowerCase() &&
+                                        i["date"].toString().contains(date)) {
                                       status = "Available";
                                       satus_col = Colors.green;
                                       print(i);
@@ -300,42 +311,36 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
                                     status = "Not Available";
                                     satus_col = Colors.red;
                                   }
-                                  if (status == "Available")
-                                    {
-                                      showDialog(
-                                      context: context,
-                                      builder: (ctx) => AlertDialog(
-                                        elevation: 3,
-                                        title: Text(
-                                          "SUCCESSFUL",
-                                          textAlign: TextAlign.center,
-                                        ),
-                                        content: Icon(
-                                          Icons.check_circle_outline_rounded,
-                                          size: 80,
-                                          color: Colors.green,
-                                        ),
-                                        // actions: <Widget>[
-                                        //   FlatButton(
-                                        //     onPressed: () {
-                                        //       Navigator.of(ctx).pop();
-                                        //     },
-                                        //     child: Text("okay"),
-                                        //   ),
-                                        // ],
-                                      ),
-                                    );
+                                  if (status == "Available") {
                                     for (var i in db1) {
-                                     if (i["from"].toString().toLowerCase() == from.toLowerCase() && i["to"].toString().toLowerCase() == to.toLowerCase() && i["date"].toString().contains(date)) {
-                                      String pnr="PNR"+givingno.toString();
-                                      givingno++;
-                                      db2.add( {'pnr':pnr,'tno':i["tno"],'from': i["from"], 'to': i["to"], 'date': i["date"]});
-                                      break;
+                                      if (i["from"].toString().toLowerCase() ==
+                                              from.toLowerCase() &&
+                                          i["to"].toString().toLowerCase() ==
+                                              to.toLowerCase() &&
+                                          i["date"].toString().contains(date)) {
+                                        String pnr =
+                                            rannum[changer].toString() + givingno.toString();
+                                            changer=(changer+1)%5;
+                                        givingno++;
+                                        db2.add({
+                                          'pnr': pnr,
+                                          'tno': i["tno"],
+                                          'from': i["from"],
+                                          'to': i["to"],
+                                          'date': date
+                                        });
+                                        toast1(
+                                          pnr,
+                                          i["tno"],
+                                          date,
+                                          i["from"],
+                                          i["to"],
+                                        );
+                                        break;
+                                      }
                                     }
-                                  }
-                                  print(db2);
-                                    }
-                                  else if (status == "Not Available")
+                                    print(db2);
+                                  } else if (status == "Not Available")
                                     showDialog(
                                       context: context,
                                       builder: (ctx) => AlertDialog(
@@ -397,6 +402,68 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
       ),
     );
   }
+
+  toast1(String pnr, String trainno, String date, String from, String to) =>
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          actions: [
+            TextButton(
+              child: Text(
+                "Close",
+                style: TextStyle(color: Colors.red, fontSize: 20),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+          elevation: 3,
+          title: Text(
+            "Successfully booked a ticket",
+            style: TextStyle(color: Colors.green, fontSize: 25),
+            textAlign: TextAlign.center,
+          ),
+          content: Container(
+            height: 250,
+            child: Column(
+              // mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "PNR NO: $pnr",
+                  style: TextStyle(color: Colors.green, fontSize: 20),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  "Train No: $trainno",
+                  style: TextStyle(color: Colors.black, fontSize: 20),
+                ),
+                Text(
+                  "Date: $date",
+                  style: TextStyle(color: Colors.black, fontSize: 20),
+                ),
+                Text(
+                  "From: $from",
+                  style: TextStyle(color: Colors.black, fontSize: 20),
+                ),
+                Text(
+                  "TO: $to",
+                  style: TextStyle(color: Colors.black, fontSize: 20),
+                ),
+                SizedBox(height: 20),
+                Center(
+                  child: Icon(
+                    Icons.check_circle_outline,
+                    size: 80,
+                    color: Colors.green,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
 }
 
 Widget Buttu2(String ttt, Color clr, IconData y, {Color tc = Colors.white}) {
