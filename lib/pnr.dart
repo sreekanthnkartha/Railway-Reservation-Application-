@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:reservationapp/styles.dart';
 
+import 'by.dart';
+
 class PNR extends StatefulWidget {
   const PNR({Key? key}) : super(key: key);
 
@@ -9,6 +11,7 @@ class PNR extends StatefulWidget {
 }
 
 class _PNRState extends State<PNR> {
+  String mypnr = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,17 +24,33 @@ class _PNRState extends State<PNR> {
           child: Column(
             // mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              myfield("PNR", Icons.person),
+              Container(
+                  margin: EdgeInsets.only(bottom: 20),
+                  child: TextField(
+                      style: inputstyle(),
+                      onChanged: (val) {
+                        mypnr = val;
+                        // uc.reg_data[key] = val;
+                      },
+                      decoration: inputdec("PNR", Icons.person))),
               FlatButton(
                   color: Colors.cyan,
                   onPressed: () {
-                    toast1(
-                      "123",
-                      "456",
-                      "12/02/2020",
-                      "thrissur",
-                      "kollam",
-                    );
+                    int f = 0;
+                    for (var i in db2) {
+                      if (i["pnr"] == mypnr) {
+                        f = 1;
+                        toast1(
+                          i["pnr"],
+                          i["tno"],
+                          i["date"],
+                          i["from"],
+                          i["to"],
+                        );
+                        break;
+                      }
+                    }
+                    if (f == 0) toast2();
                   },
                   child: Icon(
                     Icons.search_rounded,
