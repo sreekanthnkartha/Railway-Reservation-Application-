@@ -214,8 +214,10 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
                               TextField(
                                 controller: _controller3,
                                 style: inputstyle(),
+                              readOnly: true,
                                 onChanged: (value) {
-                                  date = value;
+                                  // date = value;
+                                  selectDate(context);
                                 },
                                 decoration: InputDecoration(
                                     fillColor: Colors.white,
