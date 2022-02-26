@@ -18,13 +18,15 @@ class BOOK_TICKETS extends StatefulWidget {
 class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
   @override
   int f = 0;
-  String from = "", to = "", date = "";
+  String from = "", to = "", date = "",date2="";
   int pid = 8;
   String status = "Not Available";
+  DateTime selectedDate = DateTime.now();
   Color satus_col = Colors.white;
 
   TextEditingController _controller1 = TextEditingController(text: "");
   TextEditingController _controller2 = TextEditingController(text: "");
+  TextEditingController _controller3 = TextEditingController(text: "");
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -145,7 +147,8 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
                                     onChanged: (value) {
                                       from = value;
                                     },
-                                    decoration: inputdec("From", Icons.gps_fixed_outlined),
+                                    decoration: inputdec(
+                                        "From", Icons.gps_fixed_outlined),
                                     keyboardType: TextInputType.streetAddress,
                                   ),
                                 ],
@@ -188,9 +191,9 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
                                     onChanged: (value) {
                                       to = value;
                                     },
-                                    decoration: inputdec("To", Icons.location_on_outlined),
+                                    decoration: inputdec(
+                                        "To", Icons.location_on_outlined),
                                     keyboardType: TextInputType.streetAddress,
-                                    
                                   ),
                                 ],
                               ),
@@ -209,13 +212,47 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
                                 height: 10,
                               ),
                               TextField(
+                                controller: _controller3,
                                 style: inputstyle(),
                                 onChanged: (value) {
                                   date = value;
                                 },
-                                decoration: inputdec("DD/MM/YYYY", Icons.calendar_today_outlined),
+                                decoration: InputDecoration(
+                                    fillColor: Colors.white,
+                                    filled: true,
+                                    border: new OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10.0)),
+                                        borderSide:
+                                            BorderSide(color: Colors.black)),
+                                    focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10.0)),
+                                        borderSide:
+                                            BorderSide(color: Colors.cyan)),
+                                    enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10.0)),
+                                        borderSide:
+                                            BorderSide(color: Colors.black)),
+                                    errorBorder: InputBorder.none,
+                                    disabledBorder: InputBorder.none,
+                                    hintStyle: TextStyle(
+                                      fontSize: 16, // or whatever
+                                      color: Colors.grey,
+                                      height:
+                                          2.2, //                                <----- this was the key
+                                    ),
+                                    prefixIcon: IconButton(
+                                      onPressed: () => selectDate(context),
+                                      icon:Icon(Icons.calendar_today_outlined),
+                                      iconSize: 20,
+                                      color: Colors.black,
+                                    ),
+                                    contentPadding: EdgeInsets.all(8),
+                                    isDense: true,
+                                    hintText: "DD/MM/YYYY"),
                                 keyboardType: TextInputType.datetime,
-                                
                               ),
                             ],
                           ),
@@ -239,7 +276,7 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
                                             from.toLowerCase() &&
                                         i["to"].toString().toLowerCase() ==
                                             to.toLowerCase() &&
-                                        i["date"].toString().contains(date)) {
+                                        i["date"].toString().contains(date2)) {
                                       status = "Available";
                                       satus_col = Colors.green;
                                       print(i);
@@ -280,7 +317,7 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
                                             from.toLowerCase() &&
                                         i["to"].toString().toLowerCase() ==
                                             to.toLowerCase() &&
-                                        i["date"].toString().contains(date)) {
+                                        i["date"].toString().contains(date2)) {
                                       status = "Available";
                                       satus_col = Colors.green;
                                       print(i);
@@ -298,16 +335,15 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
                                               from.toLowerCase() &&
                                           i["to"].toString().toLowerCase() ==
                                               to.toLowerCase() &&
-                                          i["date"].toString().contains(date)) {
-                                        String pnr =
-                                            rannum[changer].toString();
-                                            changer=(changer+1)%13;
+                                          i["date"].toString().contains(date2)) {
+                                        String pnr = rannum[changer].toString();
+                                        changer = (changer + 1) % 13;
                                         db2.add({
                                           'pnr': pnr,
                                           'tno': i["tno"],
                                           'from': i["from"],
                                           'to': i["to"],
-                                          'date': date
+                                          'date': date2
                                         });
                                         toast1(
                                           pnr,
@@ -444,6 +480,31 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
           ),
         ),
       );
+  selectDate(BuildContext context) async {
+    final DateTime? selected = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2025),
+    );
+    if (selected != null && selected != selectedDate)
+      setState(() {
+        selectedDate = selected;
+        var temp=selectedDate.day;
+        var temp1=selectedDate.month;
+        var temp2=selectedDate.year;
+        var temp3=temp.toString();
+        var temp4=temp1.toString();
+        if(temp3.length==1)
+        temp3="0"+temp3;
+        if(temp4.length==1)
+        temp4="0"+temp4;
+        date = temp3+"/"+temp4+"/"+temp2.toString();
+        _controller3=TextEditingController(text: date);
+        print(date);
+        date2=date[0]+date[1]+date[2]+date[3]+date[4];
+      });
+  }
 }
 
 Widget Buttu2(String ttt, Color clr, IconData y, {Color tc = Colors.white}) {
