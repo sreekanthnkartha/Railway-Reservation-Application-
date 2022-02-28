@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:reservationapp/booktickets.dart';
 import 'package:reservationapp/login.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MaterialApp(
     home: MyApp(),
     debugShowCheckedModeBanner: false,
@@ -21,7 +26,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(seconds: 4), () {
+    Future.delayed(Duration(seconds: 2), () {
       Navigator.pop(context);
       Navigator.push(
           context,

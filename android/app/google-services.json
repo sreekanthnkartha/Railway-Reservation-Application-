@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "436687320012",
+    "project_id": "railway2-b80dc",
+    "storage_bucket": "railway2-b80dc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:436687320012:android:19b56722a1170ddfbd6369",
+        "android_client_info": {
+          "package_name": "com.example.reservationapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "436687320012-uoptd32j2n1iub7470tnlu2uct6smahk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFwlaCJoiFue6nA4pOXByJNNSugcxuF3k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "436687320012-uoptd32j2n1iub7470tnlu2uct6smahk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

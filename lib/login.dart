@@ -5,6 +5,9 @@ import 'package:get/get.dart';
 import 'package:reservationapp/booktickets.dart';
 import 'package:reservationapp/registration.dart';
 import 'styles.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 //If you use getx state management, stateless widgets are enough.
 class LoginPage extends StatefulWidget {
@@ -14,11 +17,42 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   //call our controller here
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  late final allData;
+  toast2(String a) => showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          elevation: 3,
+          title: Text(
+            a,
+            textAlign: TextAlign.center,
+          ),
+          content: Icon(
+            Icons.remove_circle_outline,
+            size: 80,
+            color: Colors.red,
+          ),
+        ),
+      );
   @override
   IconData id = Icons.visibility_off;
   bool _obscuretext = true;
   Widget build(BuildContext context) {
-    
+    CollectionReference _collectionRef =
+        FirebaseFirestore.instance.collection('Users');
+
+    Future<void> getData() async {
+      // Get docs from collection reference
+      QuerySnapshot querySnapshot = await _collectionRef.get();
+
+      // Get data from docs and convert map to List
+      allData = querySnapshot.docs.map((doc) => doc.data()).toList();
+
+      print(allData);
+    }
+
     return Scaffold(
         resizeToAvoidBottomInset: false,
         body: GestureDetector(
@@ -61,6 +95,7 @@ class _LoginPageState extends State<LoginPage> {
                             NeverScrollableScrollPhysics(), //to prevent default scrolling of listview
                         children: <Widget>[
                           TextField(
+                              controller: _emailController,
                               style: inputstyle(),
                               // controller: uc.uname,
                               decoration:
@@ -69,22 +104,23 @@ class _LoginPageState extends State<LoginPage> {
                             height: 20,
                           ),
                           TextField(
+                            controller: _passwordController,
                             obscureText: _obscuretext,
                             style: inputstyle(),
                             // controller: uc.pwd,
                             decoration: InputDecoration(
-                               suffixIcon: IconButton(
-                        icon: Icon(id),
-                        color: Colors.black,
-                        onPressed: () {
-                          setState(() {
-                            _obscuretext = !_obscuretext;
-                            if (_obscuretext)
-                              id = Icons.visibility_off;
-                            else
-                              id = Icons.visibility;
-                          });
-                        }),
+                                suffixIcon: IconButton(
+                                    icon: Icon(id),
+                                    color: Colors.black,
+                                    onPressed: () {
+                                      setState(() {
+                                        _obscuretext = !_obscuretext;
+                                        if (_obscuretext)
+                                          id = Icons.visibility_off;
+                                        else
+                                          id = Icons.visibility;
+                                      });
+                                    }),
                                 fillColor: Colors.white,
                                 filled: true,
                                 border: new OutlineInputBorder(
@@ -121,9 +157,22 @@ class _LoginPageState extends State<LoginPage> {
                           Padding(
                             padding: EdgeInsets.only(top: 20),
                             child: MaterialButton(
-                              onPressed: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => BOOK_TICKETS()));
+                              onPressed: () async {
+                                try {
+                                  await _firebaseAuth
+                                      .signInWithEmailAndPassword(
+                                          email: _emailController.text,
+                                          password: _passwordController.text)
+                                      .then(
+                                          (value) => print('Login Successful'));
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => BOOK_TICKETS()));
+                                } catch (e) {
+                                  String aaa;
+                                  aaa = e.toString();
+                                  int kpp = aaa.lastIndexOf(']') + 1;
+                                  toast2(aaa.substring(kpp));
+                                }
                               }, //since this is only a UI app
                               child: Text(
                                 'SIGN IN',

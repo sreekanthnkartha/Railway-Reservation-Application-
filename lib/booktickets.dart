@@ -7,6 +7,9 @@ import 'package:reservationapp/by.dart';
 import 'package:reservationapp/pnr.dart';
 import 'package:reservationapp/styles.dart';
 import 'databasehelper.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class BOOK_TICKETS extends StatefulWidget {
   const BOOK_TICKETS({Key? key}) : super(key: key);
@@ -18,15 +21,33 @@ class BOOK_TICKETS extends StatefulWidget {
 class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
   @override
   int f = 0;
-  String from = "", to = "", date = "",date2="";
+  String from = "", to = "", date = "", date2 = "";
   int pid = 8;
   String status = "Not Available";
   DateTime selectedDate = DateTime.now();
   Color satus_col = Colors.white;
+  late final User user;
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  CollectionReference _collectionRef =
+      FirebaseFirestore.instance.collection('Users');
+
+  Future<void> getData() async {
+    // Get docs from collection reference
+    QuerySnapshot querySnapshot = await _collectionRef.get();
+
+    // Get data from docs and convert map to List
+    allData = querySnapshot.docs.map((doc) => doc.data()).toList();
+    print(allData);
+  }
 
   TextEditingController _controller1 = TextEditingController(text: "");
   TextEditingController _controller2 = TextEditingController(text: "");
   TextEditingController _controller3 = TextEditingController(text: "");
+  void initState() {
+    getData();
+    user = auth.currentUser!;
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -214,7 +235,7 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
                               TextField(
                                 controller: _controller3,
                                 style: inputstyle(),
-                              readOnly: true,
+                                readOnly: true,
                                 onChanged: (value) {
                                   // date = value;
                                   selectDate(context);
@@ -247,7 +268,7 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
                                     ),
                                     prefixIcon: IconButton(
                                       onPressed: () => selectDate(context),
-                                      icon:Icon(Icons.calendar_today_outlined),
+                                      icon: Icon(Icons.calendar_today_outlined),
                                       iconSize: 20,
                                       color: Colors.black,
                                     ),
@@ -311,6 +332,13 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10)),
                                 onPressed: () async {
+                                  for (var a in allData) {
+                                    if (a.containsKey("email") ?? false) {
+                                      if (a!["email"] == user.email) {
+                                        name = a["name"];
+                                      }
+                                    }
+                                  }
                                   List<Map<String, dynamic>> qrow =
                                       await Databasehelper.instance.sel();
                                   f = 0;
@@ -337,11 +365,14 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
                                               from.toLowerCase() &&
                                           i["to"].toString().toLowerCase() ==
                                               to.toLowerCase() &&
-                                          i["date"].toString().contains(date2)) {
+                                          i["date"]
+                                              .toString()
+                                              .contains(date2)) {
                                         String pnr = rannum[changer].toString();
                                         changer = (changer + 1) % 13;
                                         db2.add({
                                           'pnr': pnr,
+                                          'name': name,
                                           'tno': i["tno"],
                                           'from': i["from"],
                                           'to': i["to"],
@@ -443,11 +474,15 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
             textAlign: TextAlign.center,
           ),
           content: Container(
-            height: 250,
+            height: 270,
             child: Column(
               // mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Text(
+                  "Name: $name",
+                  style: TextStyle(color: Colors.green, fontSize: 20),
+                ),
                 Text(
                   "PNR NO: $pnr",
                   style: TextStyle(color: Colors.green, fontSize: 20),
@@ -492,19 +527,17 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
     if (selected != null && selected != selectedDate)
       setState(() {
         selectedDate = selected;
-        var temp=selectedDate.day;
-        var temp1=selectedDate.month;
-        var temp2=selectedDate.year;
-        var temp3=temp.toString();
-        var temp4=temp1.toString();
-        if(temp3.length==1)
-        temp3="0"+temp3;
-        if(temp4.length==1)
-        temp4="0"+temp4;
-        date = temp3+"/"+temp4+"/"+temp2.toString();
-        _controller3=TextEditingController(text: date);
+        var temp = selectedDate.day;
+        var temp1 = selectedDate.month;
+        var temp2 = selectedDate.year;
+        var temp3 = temp.toString();
+        var temp4 = temp1.toString();
+        if (temp3.length == 1) temp3 = "0" + temp3;
+        if (temp4.length == 1) temp4 = "0" + temp4;
+        date = temp3 + "/" + temp4 + "/" + temp2.toString();
+        _controller3 = TextEditingController(text: date);
         print(date);
-        date2=date[0]+date[1]+date[2]+date[3]+date[4];
+        date2 = date[0] + date[1] + date[2] + date[3] + date[4];
       });
   }
 }

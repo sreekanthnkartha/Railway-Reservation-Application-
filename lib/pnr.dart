@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:reservationapp/styles.dart';
 import 'by.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class PNR extends StatefulWidget {
   const PNR({Key? key}) : super(key: key);
@@ -10,7 +13,31 @@ class PNR extends StatefulWidget {
   _PNRState createState() => _PNRState();
 }
 
+late final allData;
+
 class _PNRState extends State<PNR> {
+  CollectionReference _collectionRef =
+      FirebaseFirestore.instance.collection('Users');
+
+  Future<void> getData() async {
+    // Get docs from collection reference
+    QuerySnapshot querySnapshot = await _collectionRef.get();
+
+    // Get data from docs and convert map to List
+    allData = querySnapshot.docs.map((doc) => doc.data()).toList();
+  }
+
+  void dd() {
+    print("User table");
+    print(allData);
+    print("");
+    print("Train");
+    print(db1);
+    print("");
+    print("PNR");
+    print(db2);
+  }
+
   String mypnr = "";
   int fl = 0;
   @override
@@ -18,6 +45,19 @@ class _PNRState extends State<PNR> {
     return Scaffold(
       appBar: AppBar(
         title: Text("PNR Status"),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.settings,
+              color: Colors.white,
+            ),
+            onPressed: () async {
+              // do something
+              await getData();
+              dd();
+            },
+          )
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -75,11 +115,15 @@ class _PNRState extends State<PNR> {
             textAlign: TextAlign.center,
           ),
           content: Container(
-            height: 200,
+            height: 220,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Text(
+                  "Name: $name",
+                  style: TextStyle(color: Colors.green, fontSize: 20),
+                ),
                 Text(
                   "PNR NO: $pnr",
                   style: TextStyle(color: Colors.green, fontSize: 20),

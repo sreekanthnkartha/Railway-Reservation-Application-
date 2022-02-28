@@ -53,6 +53,9 @@ dev_dependencies:
   fluttertoast: ^8.0.8
   http: ^0.13.3
   get: 
+  firebase_auth: 2.0.0
+  firebase_core:
+  cloud_firestore:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
