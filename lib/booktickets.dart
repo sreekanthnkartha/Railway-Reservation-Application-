@@ -369,6 +369,7 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
                                               .toString()
                                               .contains(date2)) {
                                         String pnr = rannum[changer].toString();
+                                        rannum[changer]++;
                                         changer = (changer + 1) % 13;
                                         db2.add({
                                           'pnr': pnr,
