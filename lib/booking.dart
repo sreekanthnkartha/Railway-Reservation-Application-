@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:reservationapp/by.dart';
 // import 'package:get/get.dart';
 import 'styles.dart';
 
@@ -12,6 +13,58 @@ class Booking extends StatefulWidget {
 class _RegPageState extends State<Booking> {
   final TextEditingController _controller = new TextEditingController();
   bool agree = false;
+  toast1(String trainno, String from, String to) =>
+        showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            actions: [
+              TextButton(
+                child: Text(
+                  "Close",
+                  style: TextStyle(color: Colors.red, fontSize: 20),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+            elevation: 3,
+            title: Text(
+              "Successfully booked a ticket",
+              style: TextStyle(color: Colors.green, fontSize: 25),
+              textAlign: TextAlign.center,
+            ),
+            content: Container(
+              height: 270,
+              child: Column(
+                // mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Train No: $trainno",
+                    style: TextStyle(color: Colors.black, fontSize: 20),
+                  ),
+                  Text(
+                    "From: $from",
+                    style: TextStyle(color: Colors.black, fontSize: 20),
+                  ),
+                  Text(
+                    "TO: $to",
+                    style: TextStyle(color: Colors.black, fontSize: 20),
+                  ),
+                  SizedBox(height: 20),
+                  Center(
+                    child: Icon(
+                      Icons.check_circle_outline,
+                      size: 80,
+                      color: Colors.green,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
   var locations = [
     'Trivandrum',
     'Kollam',
@@ -26,6 +79,7 @@ class _RegPageState extends State<Booking> {
     'Thrissur'
   ];
   var first = 'Boarding Station';
+  String tnoo="";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,8 +88,7 @@ class _RegPageState extends State<Booking> {
           backgroundColor: Colors.teal,
         ),
         body: GestureDetector(
-          onTap: ()
-          {
+          onTap: () {
             FocusScope.of(context).requestFocus(new FocusNode());
           },
           child: SingleChildScrollView(
@@ -70,7 +123,17 @@ class _RegPageState extends State<Booking> {
                           ),
                         ),
                       ),
-                      myfield("Train Number*", Icons.train_outlined),
+                      // myfield("Train Number*", Icons.train_outlined),
+                      Container(
+                          margin: EdgeInsets.only(bottom: 20),
+                          child: TextField(
+                              onChanged: (value)
+                              {
+                                tnoo=value;
+                              },
+                              style: inputstyle(),
+                              decoration: inputdec(
+                                  "Train Number*", Icons.train_outlined))),
                       myfield("Journey Date*", Icons.date_range),
                       Padding(
                         padding: EdgeInsets.only(bottom: 20),
@@ -131,7 +194,17 @@ class _RegPageState extends State<Booking> {
                         ),
                       ),
                       MaterialButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          for(var i in db4)
+                          {
+                            if(i["tno"]==tnoo)
+                            {
+                              toast1(i["tno"],i["from"],i["to"]);
+                              // toast()i["s1"]
+                              break;
+                            }
+                          }
+                        },
                         //since this is only a UI app
                         child: Text(
                           'GET TRAIN CHART',
@@ -160,6 +233,7 @@ class _RegPageState extends State<Booking> {
             ],
           )),
         ));
+    
   }
 
   myfield(String key, var icn) => Container(

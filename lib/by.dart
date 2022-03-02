@@ -23,3 +23,10 @@ List<Map<String, dynamic>> db1 = [
 ];
 //db1.add( {'Starting': 'd', 'Destination': 'd', 'Date': '12-11-2012'});
 List<Map<String, dynamic>> db2 = [];
+List<Map<String, dynamic>> db3 = [
+   {'tno': 't100', 'sn': 5},
+];
+List<Map<String, dynamic>> db4 = [
+  {'tno': 't100', 'from': 'Aluva', 'to': 'Goa', 's1': 'assaf','s2':"sfsfs"},
+];
+

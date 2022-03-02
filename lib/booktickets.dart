@@ -332,6 +332,7 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10)),
                                 onPressed: () async {
+                                  String kl="";
                                   for (var a in allData) {
                                     if (a.containsKey("email") ?? false) {
                                       if (a!["email"] == user.email) {
@@ -370,6 +371,7 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
                                               .contains(date2)) {
                                         String pnr = rannum[changer].toString();
                                         rannum[changer]++;
+                                        kl=i["tno"];
                                         changer = (changer + 1) % 13;
                                         db2.add({
                                           'pnr': pnr,
@@ -379,12 +381,21 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
                                           'to': i["to"],
                                           'date': date2
                                         });
+                                        int hj=0;
+                                        for(var y in db3)
+                                        {
+                                          if(y["tno"]==kl)
+                                          {y["sn"]--;
+                                          hj=y["sn"];
+                                          }
+                                        }
                                         toast1(
                                           pnr,
                                           i["tno"],
                                           date,
                                           i["from"],
                                           i["to"],
+                                          hj
                                         );
                                         break;
                                       }
@@ -453,7 +464,7 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
     );
   }
 
-  toast1(String pnr, String trainno, String date, String from, String to) =>
+  toast1(String pnr, String trainno, String date, String from, String to, int sn) =>
       showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
@@ -503,6 +514,10 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
                 ),
                 Text(
                   "TO: $to",
+                  style: TextStyle(color: Colors.black, fontSize: 20),
+                ),
+                 Text(
+                  "Seat Available: $sn",
                   style: TextStyle(color: Colors.black, fontSize: 20),
                 ),
                 SizedBox(height: 20),
