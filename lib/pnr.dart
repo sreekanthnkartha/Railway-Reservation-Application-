@@ -38,7 +38,7 @@ class _PNRState extends State<PNR> {
     print(db2);
   }
 
-  String mypnr = "";
+  String mypnr = "", tnoo = "";
   int fl = 0;
   @override
   Widget build(BuildContext context) {
@@ -194,6 +194,12 @@ class _PNRState extends State<PNR> {
                       for (var i in db2) {
                         if (i["pnr"] == mypnr) {
                           db2.remove(i);
+                          tnoo = i["tno"];
+                          for(var j in db3){
+                            if(j["tno"] == tnoo){
+                              j["sn"]++;
+                            }
+                          }
                           break;
                         }
                       }

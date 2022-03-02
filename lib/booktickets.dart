@@ -73,8 +73,8 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
                   Image(
                     fit: BoxFit.cover,
                     height: 250,
-                    image: NetworkImage(
-                        "https://cdn.dnaindia.com/sites/default/files/styles/full/public/2021/12/08/1008897-indian-railway-irctc.jpg"),
+                    image: AssetImage(
+                        "images/train1.jpg"),
                   ),
                   Container(
                     margin: EdgeInsets.only(top: 200),
@@ -141,7 +141,7 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
                                         width: 10,
                                       ),
                                       Text(
-                                        "CHARTS/VACANCY",
+                                        "Journey Details",
                                         style: TextStyle(color: Colors.white),
                                       ),
                                     ],
@@ -169,7 +169,7 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
                                       from = value;
                                     },
                                     decoration: inputdec(
-                                        "From", Icons.gps_fixed_outlined),
+                                        "From*", Icons.gps_fixed_outlined),
                                     keyboardType: TextInputType.streetAddress,
                                   ),
                                 ],
@@ -213,7 +213,7 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
                                       to = value;
                                     },
                                     decoration: inputdec(
-                                        "To", Icons.location_on_outlined),
+                                        "To*", Icons.location_on_outlined),
                                     keyboardType: TextInputType.streetAddress,
                                   ),
                                 ],
@@ -332,7 +332,7 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10)),
                                 onPressed: () async {
-                                  String kl="";
+                                  String kl = "";
                                   for (var a in allData) {
                                     if (a.containsKey("email") ?? false) {
                                       if (a!["email"] == user.email) {
@@ -371,7 +371,7 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
                                               .contains(date2)) {
                                         String pnr = rannum[changer].toString();
                                         rannum[changer]++;
-                                        kl=i["tno"];
+                                        kl = i["tno"];
                                         changer = (changer + 1) % 13;
                                         db2.add({
                                           'pnr': pnr,
@@ -381,22 +381,21 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
                                           'to': i["to"],
                                           'date': date2
                                         });
-                                        int hj=0;
-                                        for(var y in db3)
-                                        {
-                                          if(y["tno"]==kl)
-                                          {y["sn"]--;
-                                          hj=y["sn"];
+                                        int hj = 0, f = 0;
+                                        for (var y in db3) {
+                                          if (y["tno"] == kl) {
+                                            y["sn"]--;
+                                            hj = y["sn"];
+                                            if (hj < 0) {
+                                              f = 1;
+                                              toast2();
+                                            }
                                           }
                                         }
-                                        toast1(
-                                          pnr,
-                                          i["tno"],
-                                          date,
-                                          i["from"],
-                                          i["to"],
-                                          hj
-                                        );
+                                        if (f == 0) {
+                                          toast1(pnr, i["tno"], date, i["from"],
+                                              i["to"], hj);
+                                        }
                                         break;
                                       }
                                     }
@@ -464,7 +463,8 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
     );
   }
 
-  toast1(String pnr, String trainno, String date, String from, String to, int sn) =>
+  toast1(String pnr, String trainno, String date, String from, String to,
+          int sn) =>
       showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
@@ -486,7 +486,7 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
             textAlign: TextAlign.center,
           ),
           content: Container(
-            height: 270,
+            height: 272,
             child: Column(
               // mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -516,7 +516,7 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
                   "TO: $to",
                   style: TextStyle(color: Colors.black, fontSize: 20),
                 ),
-                 Text(
+                Text(
                   "Seat Available: $sn",
                   style: TextStyle(color: Colors.black, fontSize: 20),
                 ),
@@ -530,6 +530,21 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
                 ),
               ],
             ),
+          ),
+        ),
+      );
+  toast2() => showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          elevation: 3,
+          title: Text(
+            "Sorry no seats available",
+            textAlign: TextAlign.center,
+          ),
+          content: Icon(
+            Icons.remove_circle_outline,
+            size: 80,
+            color: Colors.red,
           ),
         ),
       );

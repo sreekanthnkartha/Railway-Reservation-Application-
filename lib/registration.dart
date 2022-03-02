@@ -23,7 +23,10 @@ class _RegPageState extends State<RegPage> {
   //call our controller here
   // final uc = Get.put(UserController());
   bool agree = false;
-
+  bool _obscuretext = true;
+  bool _obscuretext1 = true;
+  IconData id = Icons.visibility_off;
+  IconData id1 = Icons.visibility_off;
   //UI here
   @override
   Widget build(BuildContext context) {
@@ -75,12 +78,116 @@ class _RegPageState extends State<RegPage> {
                           NeverScrollableScrollPhysics(), //to prevent default scrolling of listview
                       children: <Widget>[
                         //Lets define each textfields as functions
-                        myfield("email", Icons.mail_outline, _emailController),
-                        myfield("name", Icons.person_outline, _nameController),
-                        myfield("password", Icons.lock_outline,
-                            _passwordController),
-                        myfield("Confirm password", Icons.lock_outline,
-                            _passwordconController),
+                        myfield("Email", Icons.mail_outline, _emailController),
+                        myfield("Name", Icons.person_outline, _nameController),
+                        // myfield("password", Icons.lock_outline,
+                        //     _passwordController),
+                        // myfield("Confirm password", Icons.lock_outline,
+                        //     _passwordconController),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 20),
+                          child: TextField(
+                            controller: _passwordController,
+                            obscureText: _obscuretext,
+                            style: inputstyle(),
+                            // controller: uc.pwd,
+                            decoration: InputDecoration(
+                                suffixIcon: IconButton(
+                                    icon: Icon(id),
+                                    color: Colors.black,
+                                    onPressed: () {
+                                      setState(() {
+                                        _obscuretext = !_obscuretext;
+                                        if (_obscuretext)
+                                          id = Icons.visibility_off;
+                                        else
+                                          id = Icons.visibility;
+                                      });
+                                    }),
+                                fillColor: Colors.white,
+                                filled: true,
+                                border: new OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10.0)),
+                                    borderSide: BorderSide(color: Colors.black)),
+                                focusedBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10.0)),
+                                    borderSide: BorderSide(color: Colors.cyan)),
+                                enabledBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10.0)),
+                                    borderSide: BorderSide(color: Colors.black)),
+                                errorBorder: InputBorder.none,
+                                disabledBorder: InputBorder.none,
+                                hintStyle: TextStyle(
+                                  fontSize: 16, // or whatever
+                                  color: Colors.grey,
+                                  height:
+                                      2.2, //                                <----- this was the key
+                                ),
+                                prefixIcon: Icon(
+                                  Icons.lock_outline,
+                                  size: 20,
+                                  color: Colors.black,
+                                ),
+                                contentPadding: EdgeInsets.all(0),
+                                isDense: true,
+                                hintText: "Password"),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 20),
+                          child: TextField(
+                            controller: _passwordconController,
+                            obscureText: _obscuretext1,
+                            style: inputstyle(),
+                            // controller: uc.pwd,
+                            decoration: InputDecoration(
+                                suffixIcon: IconButton(
+                                    icon: Icon(id1),
+                                    color: Colors.black,
+                                    onPressed: () {
+                                      setState(() {
+                                        _obscuretext1 = !_obscuretext1;
+                                        if (_obscuretext1)
+                                          id1 = Icons.visibility_off;
+                                        else
+                                          id1 = Icons.visibility;
+                                      });
+                                    }),
+                                fillColor: Colors.white,
+                                filled: true,
+                                border: new OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10.0)),
+                                    borderSide: BorderSide(color: Colors.black)),
+                                focusedBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10.0)),
+                                    borderSide: BorderSide(color: Colors.cyan)),
+                                enabledBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10.0)),
+                                    borderSide: BorderSide(color: Colors.black)),
+                                errorBorder: InputBorder.none,
+                                disabledBorder: InputBorder.none,
+                                hintStyle: TextStyle(
+                                  fontSize: 16, // or whatever
+                                  color: Colors.grey,
+                                  height:
+                                      2.2, //                                <----- this was the key
+                                ),
+                                prefixIcon: Icon(
+                                  Icons.lock_outline,
+                                  size: 20,
+                                  color: Colors.black,
+                                ),
+                                contentPadding: EdgeInsets.all(0),
+                                isDense: true,
+                                hintText: "Confirm Password"),
+                          ),
+                        ),
                         // myfield("flathouse", Icons.home_outlined),
                         // myfield("area", Icons.location_on_outlined),
                         // myfield("town", Icons.location_on_outlined),

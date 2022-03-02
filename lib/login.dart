@@ -71,8 +71,8 @@ class _LoginPageState extends State<LoginPage> {
                   Image(
                     fit: BoxFit.cover,
                     height: 350,
-                    image: NetworkImage(
-                        'https://wallpaperboat.com/wp-content/uploads/2020/11/23/61328/steam-train-02.jpg'),
+                    image: AssetImage(
+                        'images/train2.jpg'),
                   ),
                   // CachedNetworkImage(
 
@@ -165,8 +165,10 @@ class _LoginPageState extends State<LoginPage> {
                                           password: _passwordController.text)
                                       .then(
                                           (value) => print('Login Successful'));
+                                          Navigator.pop(context);
                                   Navigator.of(context).push(MaterialPageRoute(
                                       builder: (context) => BOOK_TICKETS()));
+                                      
                                 } catch (e) {
                                   String aaa;
                                   aaa = e.toString();
