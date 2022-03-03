@@ -13,7 +13,7 @@ class PNR extends StatefulWidget {
   _PNRState createState() => _PNRState();
 }
 
-late final allData;
+late var allData;
 
 class _PNRState extends State<PNR> {
   CollectionReference _collectionRef =
@@ -34,8 +34,12 @@ class _PNRState extends State<PNR> {
     print("Train");
     print(db1);
     print("");
-    print("PNR");
+    print("Ticket");
     print(db2);
+    print("Seat");
+    print(db3);
+    print("Route");
+    print(db4);
   }
 
   String mypnr = "", tnoo = "";
