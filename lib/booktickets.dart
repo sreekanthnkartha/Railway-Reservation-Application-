@@ -73,8 +73,7 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
                   Image(
                     fit: BoxFit.cover,
                     height: 250,
-                    image: AssetImage(
-                        "images/train1.jpg"),
+                    image: AssetImage("images/train1.jpg"),
                   ),
                   Container(
                     margin: EdgeInsets.only(top: 200),
@@ -384,7 +383,7 @@ class _BOOK_TICKETSState extends State<BOOK_TICKETS> {
                                         int hj = 0, f = 0;
                                         for (var y in db3) {
                                           if (y["tno"] == kl) {
-                                            y["sn"]--;
+                                            if (y["tno"] > 0) y["sn"]--;
                                             hj = y["sn"];
                                             if (hj < 0) {
                                               f = 1;
