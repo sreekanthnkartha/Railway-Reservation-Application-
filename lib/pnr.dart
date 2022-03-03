@@ -36,17 +36,10 @@ class _PNRState extends State<PNR> {
     print("");
     print("Ticket");
     print(db2);
-<<<<<<< HEAD
     print("Seat");
     print(db3);
     print("Route");
     print(db4);
-=======
-    print("Route");
-    print(db4);
-    print("Seat");
-    print(db3);
->>>>>>> 62e2b491d1992a35738f15357c030ff5f70d3620
   }
 
   String mypnr = "", tnoo = "";
